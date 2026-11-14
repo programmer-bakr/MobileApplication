@@ -1,586 +1,331 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ملخصات تطبيقات الموبايل</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Press+Start+2P&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
-  <style>
-    :root {
-      --bg-dark: #090d16;
-      --bg-card: #121826;
-      --border-neon: #1e293b;
-      --neon-green: #00ffcc;
-      --neon-purple: #b000ff;
-      --neon-blue: #00f0ff;
-      --neon-pink: #ff007f;
-      --text-main: #f8fafc;
-      --text-muted: #94a3b8;
-      --radius: 12px;
-    }
-
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { font-family: 'Rajdhani', 'Cairo', sans-serif; background-color: var(--bg-dark); color: var(--text-main); line-height: 1.7; font-size: 1.1rem; }
-    .ar-text { font-family: 'Cairo', sans-serif; }
-    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
-    
-    /* Top Header - Gaming Arcade Style */
-    .top-header { background: #05070b; border-bottom: 2px solid var(--neon-purple); position: sticky; top: 0; z-index: 100; box-shadow: 0 0 25px rgba(176, 0, 255, 0.2); }
-    .header-content { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; padding: 22px 0; gap: 16px; }
-    .brand h1 { font-family: 'Rajdhani', sans-serif; font-size: 1.8rem; font-weight: 700; color: var(--neon-blue); text-shadow: 0 0 10px rgba(0, 240, 255, 0.5); letter-spacing: 1px; cursor: pointer; }
-    .brand p { font-size: 0.95rem; color: var(--text-muted); }
-    
-    .search-box input { width: 320px; max-width: 100%; padding: 12px 18px; border-radius: 8px; border: 2px solid var(--neon-purple); background: #090d16; color: var(--neon-green); font-family: 'Rajdhani', sans-serif; font-size: 1rem; font-weight: 700; outline: none; box-shadow: inset 0 0 10px rgba(176,0,255,0.2); transition: all 0.3s; }
-    .search-box input::placeholder { color: #475569; }
-    .search-box input:focus { border-color: var(--neon-green); box-shadow: 0 0 15px rgba(0, 255, 204, 0.4), inset 0 0 10px rgba(0, 255, 204, 0.2); }
-    
-    /* Arcade Navigation */
-    .lecture-nav { background: #090d16; border-bottom: 1px solid var(--border-neon); padding: 8px 0; }
-    .nav-buttons { display: flex; gap: 12px; overflow-x: auto; padding: 6px 0; scrollbar-width: none; justify-content: center; }
-    .nav-buttons::-webkit-scrollbar { display: none; }
-    .nav-btn { background: #121826; color: var(--text-muted); border: 1px solid #1e293b; padding: 10px 22px; border-radius: 8px; font-weight: 700; font-size: 1rem; cursor: pointer; white-space: nowrap; transition: all 0.25s; text-transform: uppercase; letter-spacing: 0.5px; }
-    .nav-btn:hover { border-color: var(--neon-blue); color: #ffffff; text-shadow: 0 0 8px rgba(0, 240, 255, 0.6); }
-    .nav-btn.active { background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); border-color: var(--neon-blue); box-shadow: 0 0 15px rgba(0, 240, 255, 0.3); }
-
-    /* Main Content */
-    .main-content { padding: 40px 0 70px; }
-
-    /* Dashboard / Home View */
-    .dashboard-view { text-align: center; padding: 20px 0 40px; }
-    .dashboard-view.hidden { display: none; }
-    .dashboard-hero { margin-bottom: 40px; }
-    .dashboard-hero h2 { font-size: 2.5rem; color: var(--neon-green); text-shadow: 0 0 15px rgba(0,255,204,0.4); margin-bottom: 10px; }
-    .dashboard-hero p { color: var(--text-muted); font-size: 1.2rem; }
-
-    .dashboard-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 24px; max-width: 1000px; margin: 0 auto; }
-    .dash-card { background: var(--bg-card); border: 2px solid var(--border-neon); border-radius: 14px; padding: 30px 20px; cursor: pointer; transition: all 0.3s ease; position: relative; overflow: hidden; text-align: left; }
-    .dash-card::after { content: ''; position: absolute; bottom: 0; left: 0; width: 100%; height: 4px; background: var(--neon-blue); transition: height 0.3s; }
-    .dash-card:hover { transform: translateY(-6px); border-color: var(--neon-blue); box-shadow: 0 10px 30px rgba(0, 240, 255, 0.2); background: #161f33; }
-    .dash-card:hover::after { height: 8px; }
-    .dash-card.lec1 { border-left: 6px solid var(--neon-blue); }
-    .dash-card.lec2 { border-left: 6px solid var(--neon-green); }
-    .dash-card.lec3 { border-left: 6px solid var(--neon-purple); }
-    .dash-card.lec4 { border-left: 6px solid var(--neon-pink); }
-    
-    .dash-card .stage-tag { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; letter-spacing: 1px; margin-bottom: 8px; display: block; }
-    .dash-card h3 { font-size: 1.4rem; color: #ffffff; margin-bottom: 10px; font-weight: 700; }
-    .dash-card p { font-size: 0.95rem; color: var(--text-muted); margin-bottom: 20px; }
-    .dash-btn { background: rgba(255,255,255,0.05); color: var(--text-main); border: 1px solid rgba(255,255,255,0.1); padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; display: inline-block; transition: all 0.2s; }
-    .dash-card:hover .dash-btn { background: var(--neon-blue); color: #090d16; border-color: var(--neon-blue); box-shadow: 0 0 10px var(--neon-blue); }
-
-    /* Lecture Sections */
-    .lecture-section { margin-bottom: 50px; background: var(--bg-card); border-radius: var(--radius); border: 2px solid var(--border-neon); box-shadow: 0 8px 32px rgba(0,0,0,0.5); overflow: hidden; transition: border-color 0.3s; }
-    .lecture-section:hover { border-color: rgba(176, 0, 255, 0.4); }
-    .lecture-section.hidden { display: none; }
-
-    /* Banners - Level Style */
-    .lecture-banner { padding: 26px 32px; color: #ffffff; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; border-bottom: 2px solid rgba(255,255,255,0.05); }
-    .lec1-theme { background: linear-gradient(135deg, #090d16 0%, #1e1b4b 100%); border-left: 6px solid var(--neon-blue); }
-    .lec2-theme { background: linear-gradient(135deg, #090d16 0%, #022c22 100%); border-left: 6px solid var(--neon-green); }
-    .lec3-theme { background: linear-gradient(135deg, #090d16 0%, #3b0764 100%); border-left: 6px solid var(--neon-purple); }
-    .lec4-theme { background: linear-gradient(135deg, #090d16 0%, #431407 100%); border-left: 6px solid var(--neon-pink); }
-    
-    .lecture-banner h2 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; letter-spacing: 0.5px; }
-    .lecture-banner p { font-size: 1rem; color: var(--text-muted); }
-    .badge { background: rgba(0,0,0,0.4); padding: 8px 16px; border-radius: 6px; font-weight: 700; font-size: 0.9rem; border: 1px solid rgba(255,255,255,0.1); color: var(--neon-green); text-transform: uppercase; letter-spacing: 1px; }
-
-    /* Sub-blocks */
-    .sub-block { padding: 30px 32px; border-bottom: 2px solid var(--border-neon); }
-    .sub-block:last-of-type { border-bottom: none; }
-    .section-title { font-size: 1.25rem; color: #ffffff; font-weight: 700; margin-bottom: 22px; padding-bottom: 10px; border-bottom: 2px solid var(--border-neon); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px; letter-spacing: 0.5px; }
-    .section-title span { font-size: 1rem; color: var(--text-muted); font-weight: 500; }
-    
-    .section-header-flex { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px; margin-bottom: 22px; border-bottom: 2px solid var(--border-neon); padding-bottom: 10px; }
-    .section-header-flex .section-title { margin-bottom: 0; border-bottom: none; padding-bottom: 0; }
-
-    /* Cards - Quest Box Style */
-    .cards-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 18px; }
-    .card { background: #090d16; border: 1px solid var(--border-neon); border-radius: 10px; padding: 20px; transition: all 0.25s; position: relative; overflow: hidden; }
-    .card::before { content: ''; position: absolute; top: 0; left: 0; width: 4px; height: 100%; background: var(--neon-blue); opacity: 0; transition: opacity 0.25s; }
-    .card:hover { transform: translateY(-3px); border-color: var(--neon-blue); box-shadow: 0 5px 20px rgba(0, 240, 255, 0.15); background: #161f33; }
-    .card:hover::before { opacity: 1; }
-    .card h4 { font-size: 1.1rem; color: var(--neon-blue); font-weight: 700; margin-bottom: 8px; }
-    .card p { font-size: 1rem; color: var(--text-muted); }
-
-    /* Enumerations */
-    .enum-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; }
-    .enum-card { background: #090d16; border: 1px solid var(--border-neon); border-left: 4px solid var(--neon-green); border-radius: 10px; padding: 20px; }
-    .enum-card h4 { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; color: #ffffff; }
-    .enum-card ul, .enum-card ol { padding-left: 20px; color: var(--text-muted); font-size: 1rem; }
-    .enum-card li { margin-bottom: 6px; }
-
-    /* Tables - Inventory Style */
-    .table-card { border: 1px solid var(--border-neon); border-radius: 10px; overflow-x: auto; background: #090d16; }
-    .table-card h4 { background: #161f33; padding: 14px 20px; font-size: 1.1rem; font-weight: 700; border-bottom: 1px solid var(--border-neon); color: var(--neon-purple); }
-    table { width: 100%; border-collapse: collapse; font-size: 1rem; }
-    th, td { padding: 14px 20px; text-align: left; border-bottom: 1px solid var(--border-neon); }
-    th { background: #161f33; font-weight: 700; color: #ffffff; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: rgba(255,255,255,0.02); }
-
-    /* Blanks - Interactive Power-ups */
-    .toggle-all-btn { background: rgba(176, 0, 255, 0.15); color: #d8b4fe; border: 1px solid var(--neon-purple); padding: 8px 16px; border-radius: 8px; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; text-transform: uppercase; }
-    .toggle-all-btn:hover { background: var(--neon-purple); color: #ffffff; box-shadow: 0 0 15px rgba(176, 0, 255, 0.5); }
-    
-    .blanks-list { display: flex; flex-direction: column; gap: 12px; }
-    .blank-item { background: #090d16; padding: 14px 18px; border-radius: 8px; border: 1px solid var(--border-neon); font-size: 1.05rem; }
-    .blank-slot { display: inline-block; min-width: 130px; padding: 3px 14px; margin: 0 6px; background: rgba(0, 240, 255, 0.1); color: var(--neon-blue); border: 1px dashed var(--neon-blue); border-radius: 6px; font-weight: 700; text-align: center; cursor: pointer; user-select: none; transition: all 0.25s; }
-    .blank-slot:hover { background: rgba(0, 240, 255, 0.2); box-shadow: 0 0 10px rgba(0, 240, 255, 0.3); }
-    .blank-slot.revealed { background: rgba(0, 255, 204, 0.15); color: var(--neon-green); border: 1px solid var(--neon-green); box-shadow: 0 0 12px rgba(0, 255, 204, 0.4); }
-
-    /* Footer */
-    .site-footer { background: #05070b; color: var(--text-muted); text-align: center; padding: 28px 0; font-size: 0.95rem; border-top: 2px solid var(--border-neon); }
-
-    @media (max-width: 640px) {
-      .search-box, .search-box input { width: 100%; }
-      .sub-block { padding: 20px; }
-      .lecture-banner { padding: 20px; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ملخصات تطبيقات الموبايل | الطائي</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Rajdhani:wght@500;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#090d16;--card:#121826;--line:#263449;--cyan:#00f0ff;--green:#00ffcc;--purple:#b000ff;--pink:#ff007f;--gold:#f59e0b;--white:#f8fafc;--muted:#a5b2c5}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:Rajdhani,Cairo,sans-serif;background:var(--bg);color:var(--white);line-height:1.7;font-size:17px}
+.ar{font-family:Cairo,sans-serif}.container{max-width:1200px;margin:auto;padding:0 20px}
+header{position:sticky;top:0;z-index:10;background:#05070b;border-bottom:2px solid var(--purple);box-shadow:0 0 20px #b000ff33}
+.header{display:flex;justify-content:space-between;align-items:center;gap:16px;flex-wrap:wrap;padding:17px 0}
+.brand h1{font-size:27px;color:var(--cyan);cursor:pointer}.brand p{color:var(--muted);font-size:14px}
+.search input{width:320px;max-width:100%;padding:12px 15px;border:1px solid var(--purple);border-radius:9px;background:#090d16;color:var(--green);font:700 16px Rajdhani}
+nav{border-top:1px solid var(--line);padding:9px 0}.navbuttons{display:flex;justify-content:center;gap:10px;flex-wrap:wrap}
+button,.btn{cursor:pointer;border:1px solid var(--line);border-radius:8px;padding:9px 15px;background:#151e2e;color:var(--white);font:700 15px Rajdhani;transition:.2s}
+button:hover,.btn:hover{border-color:var(--cyan);color:var(--cyan);transform:translateY(-1px)}
+main{padding:35px 0 60px}.dashboard{text-align:center;padding:25px 0 40px}.dashboard h2{font-size:32px;color:var(--green)}.dashboard p{color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:18px;margin-top:28px}
+.dash{background:var(--card);border:1px solid var(--line);border-left:5px solid var(--cyan);border-radius:13px;padding:24px;text-align:left;cursor:pointer;transition:.25s}
+.dash:hover{transform:translateY(-5px);border-color:var(--cyan);box-shadow:0 10px 25px #00f0ff22}.dash h3{margin:8px 0;color:white}.dash p{margin-bottom:14px}
+.tag{font-size:13px;color:var(--muted);letter-spacing:1px}.dash .btn{display:inline-block}
+.dash.l2{border-left-color:var(--green)}.dash.l3{border-left-color:var(--purple)}.dash.l4{border-left-color:var(--pink)}.dash.l5{border-left-color:var(--gold)}
+.section{background:var(--card);border:1px solid var(--line);border-radius:13px;margin-bottom:30px;overflow:hidden}.hidden{display:none!important}
+.banner{padding:22px 27px;background:linear-gradient(120deg,#101827,#1e1b4b);border-left:5px solid var(--cyan)}.banner h2{font-size:23px}.banner p{color:var(--muted)}
+.content{padding:25px;border-bottom:1px solid var(--line)}.content:last-child{border:0}
+h3.stitle{font-size:21px;margin-bottom:18px;padding-bottom:9px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+h3.stitle span{font:14px Cairo;color:var(--muted)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:15px}
+.card,.enum{background:#090d16;border:1px solid var(--line);border-radius:9px;padding:17px;overflow-wrap:anywhere}
+.card h4,.enum h4{color:var(--cyan);margin-bottom:8px;font-size:18px}.card p,.enum{color:var(--muted)}
+.enum{border-left:4px solid var(--green)}.enum ul,.enum ol{padding-left:22px}.enum li{margin:4px 0}
+details{margin-top:12px;border-top:1px solid var(--line);padding-top:10px}summary{color:var(--green);font-weight:bold;cursor:pointer}details p,details li{color:#d4deeb;margin:7px 0}
+.blanks{display:flex;flex-direction:column;gap:10px}.blank{background:#090d16;border:1px solid var(--line);border-radius:8px;padding:12px 15px;color:#e6edf7}
+.answer{display:inline-block;min-width:110px;padding:2px 10px;margin:0 4px;border:1px dashed var(--cyan);border-radius:6px;color:var(--cyan);background:#00f0ff12;cursor:pointer;text-align:center;font-weight:bold}
+.answer.revealed{color:var(--green);border:1px solid var(--green);background:#00ffcc18}
+.action{background:#32104a;border-color:var(--purple);margin:0 0 15px}
+table{width:100%;border-collapse:collapse;margin-top:10px;font-size:15px}td,th{padding:10px;border:1px solid var(--line);text-align:left}th{background:#1b2940;color:var(--cyan)}
+pre{white-space:pre-wrap;background:#05070b;padding:14px;border-radius:8px;color:var(--green);overflow:auto}
+footer{text-align:center;padding:25px;background:#05070b;border-top:1px solid var(--line);color:var(--muted)}footer a{color:var(--cyan)}
+@media(max-width:650px){.search,.search input{width:100%}.header{padding:13px 0}.dashboard h2{font-size:25px}.content{padding:17px}.banner{padding:18px}.brand h1{font-size:23px}}
+</style>
 </head>
 <body>
-  <header class="top-header">
-    <div class="container header-content">
-      <div class="brand">
-        <h1 id="homeBrandBtn" style="cursor: pointer;">ملخصات تطبيقات الموبايل</h1>
-        <p class="ar-text">منصة المراجعة الامتحانية التفاعلية | المحاضرات 1 – 4</p>
-      </div>
-      <div class="search-box">
-        <input type="text" id="searchInput" placeholder="SEARCH QUEST / TERM..." />
-      </div>
-    </div>
-    <nav class="lecture-nav">
-      <div class="container nav-buttons">
-        <button class="nav-btn active" data-lecture="dashboard">// لوحة التحكم</button>
-      </div>
-    </nav>
-  </header>
+<header>
+ <div class="container header">
+  <div class="brand"><h1 onclick="home()">ملخصات تطبيقات الموبايل</h1><p class="ar">منصة المراجعة الامتحانية التفاعلية | المحاضرات 1 – 4</p></div>
+  <div class="search"><input id="search" placeholder="SEARCH QUESTION / TERM..." oninput="searchContent()"></div>
+ </div>
+ <nav><div class="container navbuttons"><button id="back" onclick="home()">// لوحة التحكم</button></div></nav>
+</header>
+<main class="container" id="main">
+<div class="dashboard" id="dashboard">
+ <h2 class="ar">اختر المحاضرة أو القسم للانتقال</h2><p class="ar">اختر القسم المطلوب لبدء الدراسة والمراجعة</p>
+ <div class="grid">
+  <div class="dash" onclick="show('lec1')"><span class="tag">STAGE 01</span><h3>Level 01: Foundations</h3><p class="ar">تعاريف + تعداد + فراغات</p><span class="btn">ابدأ المستوى</span></div>
+  <div class="dash l2" onclick="show('lec2')"><span class="tag">STAGE 02</span><h3>Level 02: Platforms & Tools</h3><p class="ar">منصات وأدوات التطوير</p><span class="btn">ابدأ المستوى</span></div>
+  <div class="dash l3" onclick="show('lec3')"><span class="tag">STAGE 03</span><h3>Level 03: Native vs PWAs</h3><p class="ar">التطبيقات الأصلية والتحديات</p><span class="btn">ابدأ المستوى</span></div>
+  <div class="dash l4" onclick="show('lec4')"><span class="tag">STAGE 04</span><h3>Level 04: Server & AI</h3><p class="ar">الاتصال بالخوادم والذكاء الاصطناعي</p><span class="btn">ابدأ المستوى</span></div>
+  <div class="dash l5" onclick="show('past')"><span class="tag">EXAM ARCHIVE</span><h3>Previous Years Questions</h3><p class="ar">أسئلة السنوات السابقة مع الحلول النموذجية</p><span class="btn">ابدأ المراجعة</span></div>
+ </div>
+</div>
 
-  <main class="container main-content" id="contentArea">
-    <!-- ==================== DASHBOARD VIEW ==================== -->
-    <div class="dashboard-view" id="dashboardView">
-      <div class="dashboard-hero">
-        <h2>اختر المحاضرة أو المستوى للانتقال</h2>
-        <p class="ar-text">اختر القسم المطلوب لبدء الدراسة والمراجعة</p>
-      </div>
-      <div class="dashboard-grid">
-        <div class="dash-card lec1" data-target="lec1">
-          <span class="stage-tag">Stage 01</span>
-          <h3>Level 01: Foundations</h3>
-          <p>تعاريف + تعداد + فراغات (مقدمة ودورة التطوير)</p>
-          <span class="dash-btn">ابدأ المستوى</span>
-        </div>
-        <div class="dash-card lec2" data-target="lec2">
-          <span class="stage-tag">Stage 02</span>
-          <h3>Level 02: Platforms & Tools</h3>
-          <p>تعاريف + تعداد + فراغات (منصات وأدوات التطوير)</p>
-          <span class="dash-btn">ابدأ المستوى</span>
-        </div>
-        <div class="dash-card lec3" data-target="lec3">
-          <span class="stage-tag">Stage 03</span>
-          <h3>Level 03: Native vs PWAs</h3>
-          <p>تعاريف + تعداد + مقارنة + فراغات (التطبيقات الأصلية والتحديات)</p>
-          <span class="dash-btn">ابدأ المستوى</span>
-        </div>
-        <div class="dash-card lec4" data-target="lec4">
-          <span class="stage-tag">Stage 04</span>
-          <h3>Level 04: Server & AI</h3>
-          <p>تعاريف + تعداد + فراغات (الاتصال بالخوادم والذكاء الاصطناعي)</p>
-          <span class="dash-btn">ابدأ المستوى</span>
-        </div>
-      </div>
-    </div>
+<section class="section hidden" id="lec1">
+ <div class="banner"><h2>LEVEL 01: Foundations & Development Process</h2><p class="ar">تعاريف + تعداد + فراغات</p></div>
+ <div class="content"><h3 class="stitle">1. Definitions <span>(التعاريف)</span></h3><div class="cards">
+  <div class="card"><h4>Mobile Application</h4><p>A software program designed to perform specific tasks on a mobile device.</p></div>
+  <div class="card"><h4>Mobile Application Programming</h4><p>Writing and organizing instructions that control how an application operates.</p></div>
+  <div class="card"><h4>User Interface (UI)</h4><p>The visual and interactive part of a mobile application.</p></div>
+  <div class="card"><h4>Application Functionality</h4><p>The operations and services provided by a mobile application.</p></div>
+  <div class="card"><h4>Application Execution</h4><p>The process of running a mobile application on a compatible device.</p></div>
+  <div class="card"><h4>Mobile Application Development Process</h4><p>A sequence of activities that transform an initial idea into a functional software application.</p></div>
+  <div class="card"><h4>Planning and Analysis</h4><p>Identifying the purpose, target users, and problems the application aims to solve.</p></div>
+  <div class="card"><h4>Application Design</h4><p>Defining the application's structure, screen layouts, navigation, and user interactions.</p></div>
+  <div class="card"><h4>Application Development</h4><p>Writing program code and implementing application features.</p></div>
+  <div class="card"><h4>Application Testing</h4><p>Examining an application to identify errors and verify functionality and behavior.</p></div>
+  <div class="card"><h4>Deployment</h4><p>Preparing and releasing an application for users through application stores or other distribution methods.</p></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">2. Enumerations <span>(التعدادات)</span></h3><div class="cards">
+  <div class="enum"><h4>Mobile devices include:</h4><ul><li>Smartphones</li><li>Tablets</li><li>Wearable devices</li></ul></div>
+  <div class="enum"><h4>Modern mobile applications provide solutions for:</h4><ul><li>Communication</li><li>Education</li><li>Transportation</li><li>Healthcare</li><li>Business activities</li></ul></div>
+  <div class="enum"><h4>UI elements include:</h4><ul><li>Buttons</li><li>Text fields</li><li>Images</li><li>Menus</li><li>Navigation controls</li></ul></div>
+  <div class="enum"><h4>Application functionality includes:</h4><ul><li>Performing calculations</li><li>Displaying information</li><li>Saving user input</li><li>Retrieving stored data</li><li>Responding to user actions</li></ul></div>
+  <div class="enum"><h4>Development process consists of FIVE stages:</h4><ol><li>Planning and Analysis</li><li>Application Design</li><li>Application Development</li><li>Application Testing</li><li>Deployment and Maintenance</li></ol></div>
+  <div class="enum"><h4>Planning and Analysis includes:</h4><ul><li>Identifying application purpose</li><li>Identifying target users</li><li>Analyzing user requirements</li><li>Setting main features</li><li>Setting clear objectives</li></ul></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">3. Fill in the Blanks <span>(اضغط لإظهار الإجابة)</span></h3><button class="action" onclick="toggleAll('b1')">REVEAL / HIDE ALL</button><div class="blanks" id="b1">
+  <div class="blank">1. Mobile applications operate on <span class="answer" data-a="mobile devices">?[CLICK]</span>.</div>
+  <div class="blank">2. Mobile devices include smartphones, tablets, and <span class="answer" data-a="wearable devices">?[CLICK]</span>.</div>
+  <div class="blank">3. A mobile application is a <span class="answer" data-a="software program">?[CLICK]</span>.</div>
+  <div class="blank">4. UI stands for <span class="answer" data-a="User Interface">?[CLICK]</span>.</div>
+  <div class="blank">5. UI includes buttons, text fields, images, menus, and <span class="answer" data-a="navigation controls">?[CLICK]</span>.</div>
+  <div class="blank">6. Application functionality is implemented through its <span class="answer" data-a="program code">?[CLICK]</span>.</div>
+  <div class="blank">7. Application execution is the process of <span class="answer" data-a="running">?[CLICK]</span> a mobile application.</div>
+  <div class="blank">8. The operating system allocates <span class="answer" data-a="resources">?[CLICK]</span> to the application.</div>
+  <div class="blank">9. Planning identifies the application purpose and <span class="answer" data-a="target users">?[CLICK]</span>.</div>
+  <div class="blank">10. Application design defines screen layouts and <span class="answer" data-a="navigation">?[CLICK]</span>.</div>
+  <div class="blank">11. Testing identifies <span class="answer" data-a="programming errors">?[CLICK]</span>.</div>
+  <div class="blank">12. Application maintenance provides <span class="answer" data-a="updates">?[CLICK]</span>.</div>
+ </div></div>
+</section>
 
-    <!-- ==================== LECTURE ONE ==================== -->
-    <section class="lecture-section hidden" id="lec1" data-lec="lec1">
-      <div class="lecture-banner lec1-theme">
-        <div>
-          <h2>LEVEL 01: Foundations & Development Process</h2>
-          <p class="ar-text">تعاريف + تعداد + فراغات</p>
-        </div>
-        <span class="badge">STAGE 1</span>
-      </div>
+<section class="section hidden" id="lec2">
+ <div class="banner"><h2>LEVEL 02: Platforms, Tools & Architecture</h2><p class="ar">تعاريف + تعداد + فراغات</p></div>
+ <div class="content"><h3 class="stitle">1. Definitions <span>(التعاريف)</span></h3><div class="cards">
+  <div class="card"><h4>Android Development Platform</h4><p>Android is a mobile operating system used by various smartphone and tablet manufacturers.</p></div>
+  <div class="card"><h4>iOS Development Platform</h4><p>iOS is Apple's mobile operating system designed for iPhone devices.</p></div>
+  <div class="card"><h4>Integrated Development Environment (IDE)</h4><p>A software application that provides tools for writing, organizing, building, and debugging code.</p></div>
+  <div class="card"><h4>Software Development Kit (SDK)</h4><p>A collection of software libraries, programming interfaces, and development tools used to create applications for a specific platform.</p></div>
+  <div class="card"><h4>Mobile Emulator and Simulator</h4><p>Software tools that allow developers to run and test applications in virtual device environments.</p></div>
+  <div class="card"><h4>Data Storage</h4><p>Enables an application to save and retrieve information required for its operation.</p></div>
+  <div class="card"><h4>Network Communication</h4><p>Allows mobile applications to exchange data with remote servers and online services.</p></div>
+  <div class="card"><h4>Device Services and Hardware Integration</h4><p>Accessing hardware features such as cameras, microphones, and location sensors.</p></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">2. Enumerations <span>(التعدادات)</span></h3><div class="cards">
+  <div class="enum"><h4>Main platforms and tools:</h4><ul><li>Android</li><li>iOS</li><li>IDE</li><li>SDK</li><li>Emulator and Simulator</li></ul></div>
+  <div class="enum"><h4>Basic components of a mobile application:</h4><ul><li>User Interaction and Communication</li><li>Application Control and Coordination</li><li>Data Storage</li><li>Network Communication</li><li>Device Services and Hardware Integration</li></ul></div>
+  <div class="enum"><h4>Programming languages:</h4><ul><li>Android: Kotlin and Java</li><li>iOS: Swift</li></ul></div>
+  <div class="enum"><h4>Examples of IDEs:</h4><ul><li>Android Studio</li><li>Xcode</li></ul></div>
+  <div class="enum"><h4>Hardware features:</h4><ul><li>Cameras</li><li>Microphones</li><li>Location Sensors</li></ul></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">3. Fill in the Blanks <span>(اضغط لإظهار الإجابة)</span></h3><button class="action" onclick="toggleAll('b2')">REVEAL / HIDE ALL</button><div class="blanks" id="b2">
+  <div class="blank">1. Android applications can be developed using <span class="answer" data-a="Kotlin">?[CLICK]</span> and <span class="answer" data-a="Java">?[CLICK]</span>.</div>
+  <div class="blank">2. iOS applications commonly use <span class="answer" data-a="Swift">?[CLICK]</span>.</div>
+  <div class="blank">3. Android Studio is an <span class="answer" data-a="IDE">?[CLICK]</span> for Android development.</div>
+  <div class="blank">4. IDE stands for <span class="answer" data-a="Integrated Development Environment">?[CLICK]</span>.</div>
+  <div class="blank">5. SDK stands for <span class="answer" data-a="Software Development Kit">?[CLICK]</span>.</div>
+  <div class="blank">6. Emulators run applications in <span class="answer" data-a="virtual">?[CLICK]</span> device environments.</div>
+  <div class="blank">7. Data storage enables applications to <span class="answer" data-a="save">?[CLICK]</span> and <span class="answer" data-a="retrieve">?[CLICK]</span> information.</div>
+  <div class="blank">8. Network communication exchanges data with remote <span class="answer" data-a="servers">?[CLICK]</span>.</div>
+  <div class="blank">9. Cameras and microphones are device <span class="answer" data-a="hardware features">?[CLICK]</span>.</div>
+  <div class="blank">10. Device services require operating system interfaces and <span class="answer" data-a="permissions">?[CLICK]</span>.</div>
+ </div></div>
+</section>
 
-      <div class="sub-block">
-        <h3 class="section-title">1. Definitions <span class="ar-text">(التعاريف)</span></h3>
-        <div class="cards-grid">
-          <div class="card searchable"><h4>1. Mobile Application</h4><p>A mobile application is a software program designed to perform specific tasks on a mobile device.</p></div>
-          <div class="card searchable"><h4>2. Mobile Application Programming</h4><p>Mobile application programming involves writing and organizing instructions that control how an application operates.</p></div>
-          <div class="card searchable"><h4>3. User Interface (UI)</h4><p>The user interface represents the visual and interactive part of a mobile application.</p></div>
-          <div class="card searchable"><h4>4. Application Functionality</h4><p>Application functionality refers to the operations and services provided by a mobile application.</p></div>
-          <div class="card searchable"><h4>5. Application Execution</h4><p>Application execution is the process of running a mobile application on a compatible device.</p></div>
-          <div class="card searchable"><h4>6. Mobile Application Development Process</h4><p>Mobile application development involves a sequence of activities that transform an initial idea into a functional software application.</p></div>
-          <div class="card searchable"><h4>7. Planning and Analysis</h4><p>This stage involves identifying the purpose of the application, its target users, and the problems it aims to solve.</p></div>
-          <div class="card searchable"><h4>8. Application Design</h4><p>The design stage focuses on defining the application's structure, screen layouts, navigation, and user interactions.</p></div>
-          <div class="card searchable"><h4>9. Application Development</h4><p>During this stage, developers write the program code and implement the application's features.</p></div>
-          <div class="card searchable"><h4>10. Application Testing</h4><p>Testing involves examining the application to identify programming errors, verify functionality, and evaluate its behavior.</p></div>
-          <div class="card searchable"><h4>11. Deployment</h4><p>Deployment is the process of preparing and releasing the application for users through application stores or other supported distribution methods.</p></div>
-        </div>
-      </div>
+<section class="section hidden" id="lec3">
+ <div class="banner"><h2>LEVEL 03: Native Apps, PWAs & Design Challenges</h2><p class="ar">تعاريف + تعداد + مقارنة + فراغات</p></div>
+ <div class="content"><h3 class="stitle">1. Definitions <span>(التعاريف)</span></h3><div class="cards">
+  <div class="card"><h4>Native Applications</h4><p>Applications developed for specific operating systems, such as Android and iOS.</p></div>
+  <div class="card"><h4>Progressive Web Apps (PWAs)</h4><p>Web applications that provide application-like experiences through supported web browsers.</p></div>
+  <div class="card"><h4>Responsive Interfaces</h4><p>Interfaces that adapt to different display dimensions and orientations.</p></div>
+  <div class="card"><h4>Service Workers</h4><p>Technology used to support offline functionality in Progressive Web Apps.</p></div>
+  <div class="card"><h4>Caching</h4><p>Storing data locally to help maintain essential functions during network problems.</p></div>
+  <div class="card"><h4>Data Privacy</h4><p>Protecting sensitive information such as personal details, passwords, and financial data.</p></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">2. Enumerations <span>(التعدادات)</span></h3><div class="cards">
+  <div class="enum"><h4>Differences between Native Apps and PWAs:</h4><ul><li>Installation and Accessibility</li><li>Development Technologies</li><li>Device Features</li><li>Offline Functionality</li><li>Updates and Maintenance</li></ul></div>
+  <div class="enum"><h4>Mobile application design challenges:</h4><ul><li>Different Screen Sizes and Devices</li><li>Battery and Resource Consumption</li><li>Network Connectivity Problems</li><li>Security and Data Privacy</li><li>Accessibility and User Interaction</li></ul></div>
+  <div class="enum"><h4>Ways to handle network problems:</h4><ul><li>Local Storage</li><li>Caching</li><li>Retry Mechanisms</li></ul></div>
+  <div class="enum"><h4>Accessibility methods:</h4><ul><li>Readable Text</li><li>Clear Navigation</li><li>Sufficient Color Contrast</li><li>Assistive Technologies</li></ul></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">3. Comparisons <span>(المقارنة)</span></h3><div class="card"><h4>Native Mobile Applications vs PWAs</h4><table><tr><th>Comparison</th><th>Native Applications</th><th>PWAs</th></tr><tr><td>Installation</td><td>Installed through application stores</td><td>Accessed through browsers</td></tr><tr><td>Technologies</td><td>Kotlin, Swift</td><td>HTML, CSS, JavaScript</td></tr><tr><td>Device Features</td><td>Platform APIs</td><td>Browser APIs</td></tr><tr><td>Offline</td><td>Local storage</td><td>Service workers and browser storage</td></tr><tr><td>Updates</td><td>Application stores</td><td>Through the web</td></tr></table></div></div>
+ <div class="content"><h3 class="stitle">4. Fill in the Blanks <span>(اضغط لإظهار الإجابة)</span></h3><button class="action" onclick="toggleAll('b3')">REVEAL / HIDE ALL</button><div class="blanks" id="b3">
+  <div class="blank">1. Native applications are developed for specific <span class="answer" data-a="operating">?[CLICK]</span> systems.</div>
+  <div class="blank">2. PWAs use HTML, CSS, and <span class="answer" data-a="JavaScript">?[CLICK]</span>.</div>
+  <div class="blank">3. Kotlin is used for <span class="answer" data-a="Android">?[CLICK]</span> development.</div>
+  <div class="blank">4. Swift is used for <span class="answer" data-a="iOS">?[CLICK]</span> development.</div>
+  <div class="blank">5. PWAs support offline functionality using <span class="answer" data-a="service">?[CLICK]</span> workers.</div>
+  <div class="blank">6. Mobile devices have limited battery capacity, memory, and <span class="answer" data-a="processing">?[CLICK]</span> resources.</div>
+  <div class="blank">7. Developers can use local storage, caching, and <span class="answer" data-a="retry">?[CLICK]</span> mechanisms.</div>
+  <div class="blank">8. Sensitive information includes personal details, passwords, and <span class="answer" data-a="financial">?[CLICK]</span> data.</div>
+  <div class="blank">9. Interfaces should adapt to different display dimensions and <span class="answer" data-a="orientations">?[CLICK]</span>.</div>
+  <div class="blank">10. Native applications are commonly updated through application <span class="answer" data-a="stores">?[CLICK]</span>.</div>
+ </div></div>
+</section>
 
-      <div class="sub-block">
-        <h3 class="section-title">2. Enumerations <span class="ar-text">(التعدادات)</span></h3>
-        <div class="enum-grid">
-          <div class="enum-card searchable"><h4>1. Mobile devices include:</h4><ul><li>Smartphones</li><li>Tablets</li><li>Wearable devices</li></ul></div>
-          <div class="enum-card searchable"><h4>2. Modern mobile applications provide solutions for:</h4><ul><li>Communication</li><li>Education</li><li>Transportation</li><li>Healthcare</li><li>Business activities</li></ul></div>
-          <div class="enum-card searchable"><h4>3. User Interface (UI) elements include:</h4><ul><li>Buttons</li><li>Text fields</li><li>Images</li><li>Menus</li><li>Navigation controls</li></ul></div>
-          <div class="enum-card searchable"><h4>4. Application functionality includes:</h4><ul><li>Performing calculations</li><li>Displaying information</li><li>Saving user input</li><li>Retrieving stored data</li><li>Responding to user actions</li></ul></div>
-          <div class="enum-card searchable"><h4>5. Application Development Process consists of FIVE stages:</h4><ol><li>Planning and Analysis</li><li>Application Design</li><li>Application Development</li><li>Application Testing</li><li>Deployment and Maintenance</li></ol></div>
-          <div class="enum-card searchable"><h4>6. Planning and Analysis includes:</h4><ul><li>Identifying application purpose</li><li>Identifying target users</li><li>Analyzing user requirements</li><li>Setting main features</li><li>Setting clear objectives</li></ul></div>
-          <div class="enum-card searchable"><h4>7. Application Design focuses on:</h4><ul><li>Application structure</li><li>Screen layouts</li><li>Navigation</li><li>User interactions</li><li>User-friendly interface</li></ul></div>
-          <div class="enum-card searchable"><h4>8. Application Development activities include:</h4><ul><li>Creating user interfaces</li><li>Processing user input</li><li>Implementing application logic</li><li>Connecting to required data sources</li></ul></div>
-          <div class="enum-card searchable"><h4>9. Application Testing checks:</h4><ul><li>Programming errors</li><li>Functionality</li><li>User interactions</li><li>Performance</li><li>Compatibility</li></ul></div>
-          <div class="enum-card searchable"><h4>10. Deployment and Maintenance activities include:</h4><ul><li>Releasing applications</li><li>Monitoring performance</li><li>Correcting errors</li><li>Providing updates</li><li>Maintaining compatibility</li></ul></div>
-        </div>
-      </div>
+<section class="section hidden" id="lec4">
+ <div class="banner"><h2>LEVEL 04: Server Communication & AI Features</h2><p class="ar">تعاريف + تعداد + فراغات</p></div>
+ <div class="content"><h3 class="stitle">1. Definitions <span>(التعاريف)</span></h3><div class="cards">
+  <div class="card"><h4>HTTP</h4><p>A protocol used by mobile applications to communicate with servers.</p></div>
+  <div class="card"><h4>HTTPS</h4><p>A protocol that provides encrypted communication between the application and the server.</p></div>
+  <div class="card"><h4>API</h4><p>An interface used to enable communication between mobile applications and servers.</p></div>
+  <div class="card"><h4>User Request</h4><p>An action performed by a user that requires information from a remote service.</p></div>
+  <div class="card"><h4>Server Processing</h4><p>The process in which the server receives a request and performs the required operation.</p></div>
+  <div class="card"><h4>Server Response</h4><p>The information sent by the server to the mobile application after processing a request.</p></div>
+  <div class="card"><h4>Image Recognition</h4><p>The ability to identify and classify objects, text, and visual information in images.</p></div>
+  <div class="card"><h4>Speech Recognition</h4><p>The ability to convert spoken language into written text.</p></div>
+  <div class="card"><h4>Intelligent Chatbots</h4><p>Applications that allow users to communicate through natural language and receive answers.</p></div>
+  <div class="card"><h4>Personalized Recommendations</h4><p>AI systems that analyze user preferences and previous interactions to suggest relevant content.</p></div>
+  <div class="card"><h4>On-Device AI Processing</h4><p>Running AI models directly on mobile devices without sending every request to a remote server.</p></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">2. Enumerations <span>(التعدادات)</span></h3><div class="cards">
+  <div class="enum"><h4>Stages of communication between app and server:</h4><ol><li>User Request</li><li>Sending HTTP Request</li><li>Server Processing</li><li>Server Response</li><li>Displaying the Result</li></ol></div>
+  <div class="enum"><h4>HTTP request may include:</h4><ul><li>API Endpoint</li><li>HTTP Method</li><li>Authentication Information</li><li>Required Parameters</li></ul></div>
+  <div class="enum"><h4>Features of AI-powered mobile applications:</h4><ul><li>Image Recognition</li><li>Speech Recognition</li><li>Intelligent Chatbots</li><li>Personalized Recommendations</li><li>On-Device AI Processing</li></ul></div>
+  <div class="enum"><h4>Benefits of On-Device AI:</h4><ul><li>Reduce network dependency</li><li>Enable selected AI features to operate offline</li></ul></div>
+ </div></div>
+ <div class="content"><h3 class="stitle">3. Fill in the Blanks <span>(اضغط لإظهار الإجابة)</span></h3><button class="action" onclick="toggleAll('b4')">REVEAL / HIDE ALL</button><div class="blanks" id="b4">
+  <div class="blank">1. Mobile applications communicate with remote servers using <span class="answer" data-a="HTTP or HTTPS">?[CLICK]</span>.</div>
+  <div class="blank">2. The mobile application acts as a <span class="answer" data-a="Client">?[CLICK]</span>.</div>
+  <div class="blank">3. The server processes requests and returns a <span class="answer" data-a="Response">?[CLICK]</span>.</div>
+  <div class="blank">4. HTTPS provides <span class="answer" data-a="Encrypted Communication">?[CLICK]</span>.</div>
+  <div class="blank">5. Communication begins with a <span class="answer" data-a="User Request">?[CLICK]</span>.</div>
+  <div class="blank">6. The server may communicate with a <span class="answer" data-a="Database">?[CLICK]</span>.</div>
+  <div class="blank">7. Image Recognition identifies and classifies <span class="answer" data-a="Objects and Text">?[CLICK]</span>.</div>
+  <div class="blank">8. Speech Recognition converts spoken language into <span class="answer" data-a="Written Text">?[CLICK]</span>.</div>
+  <div class="blank">9. Intelligent Chatbots communicate through <span class="answer" data-a="Natural Language">?[CLICK]</span>.</div>
+  <div class="blank">10. On-Device AI runs models directly on <span class="answer" data-a="Mobile Devices">?[CLICK]</span>.</div>
+ </div></div>
+</section>
 
-      <div class="sub-block">
-        <div class="section-header-flex">
-          <h3 class="section-title">3. Fill in the Blanks <span class="ar-text">(الفراغات - اضغط لإظهار الإجابة)</span></h3>
-          <button class="toggle-all-btn" onclick="toggleSectionBlanks('lec1-blanks')">REVEAL ALL</button>
-        </div>
-        <div class="blanks-list" id="lec1-blanks">
-          <div class="blank-item searchable">1. Mobile applications operate on <span class="blank-slot" data-answer="mobile devices">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">2. Mobile devices include smartphones, tablets, and <span class="blank-slot" data-answer="wearable devices">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">3. A mobile application is a <span class="blank-slot" data-answer="software program">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">4. UI stands for <span class="blank-slot" data-answer="User Interface">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">5. UI includes buttons, text fields, images, menus, and <span class="blank-slot" data-answer="navigation controls">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">6. Application functionality is implemented through its <span class="blank-slot" data-answer="program code">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">7. Application execution is the process of <span class="blank-slot" data-answer="running">?[CLICK]</span> a mobile application.</div>
-          <div class="blank-item searchable">8. The operating system allocates <span class="blank-slot" data-answer="resources">?[CLICK]</span> to the application.</div>
-          <div class="blank-item searchable">9. Application development transforms an initial idea into a <span class="blank-slot" data-answer="functional software application">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">10. Planning identifies the application purpose and <span class="blank-slot" data-answer="target users">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">11. Application design defines screen layouts and <span class="blank-slot" data-answer="navigation">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">12. Developers write <span class="blank-slot" data-answer="program code">?[CLICK]</span> during application development.</div>
-          <div class="blank-item searchable">13. Testing identifies <span class="blank-slot" data-answer="programming errors">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">14. Deployment releases applications through <span class="blank-slot" data-answer="application stores">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">15. Developers monitor application <span class="blank-slot" data-answer="performance">?[CLICK]</span> after deployment.</div>
-          <div class="blank-item searchable">16. Application maintenance provides <span class="blank-slot" data-answer="updates">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">17. A well-designed interface enables users to <span class="blank-slot" data-answer="interact">?[CLICK]</span> with the application.</div>
-          <div class="blank-item searchable">18. Developers use programming languages and <span class="blank-slot" data-answer="development tools">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">19. Testing evaluates application <span class="blank-slot" data-answer="behavior">?[CLICK]</span> under different conditions.</div>
-          <div class="blank-item searchable">20. The final product should have quality, usability, and <span class="blank-slot" data-answer="reliability">?[CLICK]</span>.</div>
-        </div>
-      </div>
-    </section>
+<!-- ARCHIVE: PREVIOUS YEARS -->
+<section class="section hidden" id="past">
+ <div class="banner" style="background:linear-gradient(120deg,#17130b,#78350f);border-color:var(--gold)"><h2>PREVIOUS YEARS QUESTIONS</h2><p class="ar">أرشيف الامتحانات السابقة مع الحلول النموذجية</p></div>
 
-    <!-- ==================== LECTURE TWO ==================== -->
-    <section class="lecture-section hidden" id="lec2" data-lec="lec2">
-      <div class="lecture-banner lec2-theme">
-        <div>
-          <h2>LEVEL 02: Platforms, Tools & Architecture</h2>
-          <p class="ar-text">تعاريف + تعداد + فراغات</p>
-        </div>
-        <span class="badge">STAGE 2</span>
-      </div>
+ <div class="content">
+  <h3 class="stitle">Final Exam 2026 – Second Attempt <span>الامتحان النهائي 2026</span></h3>
+  <div class="cards">
+   <div class="card searchable"><h4>Q1. Define the following terms</h4><details><summary>Show Answers</summary><ol>
+    <li><b>Compatibility Issues:</b> Problems that occur when an application does not work correctly with different devices or operating systems.</li>
+    <li><b>Runtime Environment:</b> The environment in which a mobile application executes and operates.</li>
+    <li><b>Interference and Signal Blocking:</b> Problems caused by obstacles or other signals that affect wireless communication.</li>
+    <li><b>Third-party Apps:</b> Applications developed by developers or companies other than the device manufacturer or platform provider.</li>
+    <li><b>Access to Platforms:</b> The ability to develop and distribute applications through different mobile operating system platforms.</li>
+   </ol></details></div>
+   <div class="card searchable"><h4>Q2. How can user behavior be analyzed using AI?</h4><details><summary>Show Model Answer</summary><p>Artificial Intelligence analyzes user behavior by processing user interactions, preferences, search history, and usage patterns. It can identify user needs, predict behavior, and provide personalized recommendations.</p></details></div>
+   <div class="card searchable"><h4>Q2. Traditional Mobile Applications vs Smart Mobile Applications</h4><details><summary>Show Model Answer</summary><table><tr><th>Traditional Apps</th><th>Smart Apps</th></tr><tr><td>Follow predefined rules.</td><td>Use AI techniques.</td></tr><tr><td>Limited personalization.</td><td>Personalized services.</td></tr><tr><td>Perform fixed tasks.</td><td>Can learn patterns and make predictions.</td></tr></table></details></div>
+   <div class="card searchable"><h4>Q3. Error Detection and Correction</h4><p>Received data: <b>101010010</b></p><details><summary>Show Explanation</summary><p>Use the parity-check bits (C1, C2, C4, C8) to calculate the syndrome and identify the error position. The image does not clearly specify the parity convention or provide enough readable working to confirm a corrected bit sequence. Therefore, a definitive corrected data word cannot be safely stated from the paper image alone.</p></details></div>
+   <div class="card searchable"><h4>Q4. General Architecture of a Programmable Mobile Phone</h4><details><summary>Show Answer</summary><p>The architecture can be represented as layers:</p><pre>+----------------------+
+|   Applications       |
++----------------------+
+|   Middleware         |
++----------------------+
+|   Operating System   |
++----------------------+
+|   Kernel             |
++----------------------+
+|   Hardware           |
++----------------------+</pre></details></div>
+   <div class="card searchable"><h4>Q4. Role of Middleware in System Structure</h4><details><summary>Show Answer</summary><p>Middleware acts as an intermediary layer between applications and the operating system. It provides common services, APIs, communication facilities, and data management support.</p></details></div>
+  </div>
+  <h3 class="stitle" style="margin-top:25px">Q5. Fill in the Blanks</h3>
+  <button class="action" onclick="toggleAll('p26')">REVEAL / HIDE ALL</button>
+  <div class="blanks" id="p26">
+   <div class="blank searchable">1. <span class="answer" data-a="Kernel">?[CLICK]</span> is the core of the operating system that manages hardware resources, multitasking, and system calls.</div>
+   <div class="blank searchable">2. Short-range communication systems are inherently <span class="answer" data-a="Limited">?[CLICK]</span> in their coverage area.</div>
+   <div class="blank searchable">3. Mobile app development can be <span class="answer" data-a="Expensive">?[CLICK]</span>, particularly if targeting multiple platforms or requiring specialized skills.</div>
+   <div class="blank searchable">4. <span class="answer" data-a="Firmware">?[CLICK]</span> is embedded software that controls hardware at a low level.</div>
+   <div class="blank searchable">5. Components and layers work <span class="answer" data-a="Together">?[CLICK]</span> to enable the phone's functionality.</div>
+  </div>
+ </div>
 
-      <div class="sub-block">
-        <h3 class="section-title">1. Definitions <span class="ar-text">(التعاريف)</span></h3>
-        <div class="cards-grid">
-          <div class="card searchable"><h4>1. Android Development Platform</h4><p>Android is a mobile operating system used by various smartphone and tablet manufacturers.</p></div>
-          <div class="card searchable"><h4>2. iOS Development Platform</h4><p>iOS is Apple's mobile operating system designed for iPhone devices.</p></div>
-          <div class="card searchable"><h4>3. Integrated Development Environment (IDE)</h4><p>An IDE is a software application that provides tools for writing, organizing, building, and debugging program code.</p></div>
-          <div class="card searchable"><h4>4. Software Development Kit (SDK)</h4><p>An SDK is a collection of software libraries, programming interfaces, and development tools used to create applications for a specific platform.</p></div>
-          <div class="card searchable"><h4>5. Mobile Emulator and Simulator</h4><p>Emulators and simulators are software tools that allow developers to run and test mobile applications in virtual device environments.</p></div>
-          <div class="card searchable"><h4>6. User Interaction and Communication</h4><p>The user interface acts as the communication layer between the user and the application's internal components.</p></div>
-          <div class="card searchable"><h4>7. Application Control and Coordination</h4><p>Application logic is responsible for processing user input and controlling how the application works.</p></div>
-          <div class="card searchable"><h4>8. Data Storage</h4><p>Data storage enables an application to save and retrieve information required for its operation.</p></div>
-          <div class="card searchable"><h4>9. Network Communication</h4><p>Network communication allows mobile applications to exchange data with remote servers and online services.</p></div>
-          <div class="card searchable"><h4>10. Device Services and Hardware Integration</h4><p>Mobile applications use device services to access hardware features such as cameras, microphones, and location sensors.</p></div>
-        </div>
-      </div>
+ <div class="content">
+  <h3 class="stitle">Midterm Exam 2025 <span>امتحان نصف السنة 2025</span></h3>
+  <div class="cards">
+   <div class="card searchable"><h4>Q1. What are the reasons for using mobile application programming?</h4><details><summary>Show Model Answer</summary><ol><li>Enhanced User Experience</li><li>Access to Platforms</li><li>Revenue Generation</li><li>Mobile Phone Flexibility</li><li>Offline Functionality</li></ol><p><small>These are concise study points; use the exact list taught in your lecture if it differs.</small></p></details></div>
+   <div class="card searchable"><h4>Q2. Define the following terms</h4><details><summary>Show Answers</summary><ol>
+    <li><b>Updates and Maintenance:</b> The process of improving applications, fixing errors, and providing new features.</li>
+    <li><b>Offline Functionality:</b> The ability of an application to perform certain operations without an internet connection.</li>
+    <li><b>Diversity:</b> The availability of different types of applications and services for different user needs.</li>
+    <li><b>Ease of Setup:</b> The ability to install and configure an application easily.</li>
+    <li><b>Sharing Capabilities:</b> The ability to share information and content with other users or applications.</li>
+   </ol></details></div>
+  </div>
+  <h3 class="stitle" style="margin-top:25px">Q3. Fill in the Blanks</h3>
+  <button class="action" onclick="toggleAll('p25')">REVEAL / HIDE ALL</button>
+  <div class="blanks" id="p25">
+   <div class="blank searchable">1. Application Programming Interfaces allow developers to access various features and <span class="answer" data-a="capabilities">?[CLICK]</span> of the phone, such as location services, sensors, and connectivity.</div>
+   <div class="blank searchable">2. Customer opinions and preferences do not always align with the actual usage of <span class="answer" data-a="mobile applications">?[CLICK]</span>.</div>
+   <div class="blank searchable">3. <span class="answer" data-a="Native applications">?[CLICK]</span> on mobile phones run within an application suite, with the user interface framework hosting device functionality.</div>
+   <div class="blank searchable">4. Many short-range technologies are designed for low power consumption, making them <span class="answer" data-a="suitable">?[CLICK]</span> for IoT sensors.</div>
+   <div class="blank searchable">5. Mobile apps can provide a smoother, <span class="answer" data-a="contextual">?[CLICK]</span>, and feature-rich user experience compared to mobile websites.</div>
+  </div>
+ </div>
 
-      <div class="sub-block">
-        <h3 class="section-title">2. Enumeration <span class="ar-text">(التعدادات)</span></h3>
-        <div class="enum-grid">
-          <div class="enum-card searchable"><h4>Q1: What are the main mobile application development platforms and tools?</h4><ul><li>Android Development Platform</li><li>iOS Development Platform</li><li>Integrated Development Environment (IDE)</li><li>Software Development Kit (SDK)</li><li>Mobile Emulator and Simulator</li></ul></div>
-          <div class="enum-card searchable"><h4>Q2: What are the basic components of a mobile application?</h4><ul><li>User Interaction and Communication</li><li>Application Control and Coordination</li><li>Data Storage</li><li>Network Communication</li><li>Device Services and Hardware Integration</li></ul></div>
-          <div class="enum-card searchable"><h4>Q3: What programming languages are used for Android development?</h4><ul><li>Kotlin</li><li>Java</li></ul></div>
-          <div class="enum-card searchable"><h4>Q4: What programming language is commonly used for iOS development?</h4><ul><li>Swift</li></ul></div>
-          <div class="enum-card searchable"><h4>Q5: Give examples of IDEs:</h4><ul><li>Android Studio</li><li>Xcode</li></ul></div>
-          <div class="enum-card searchable"><h4>Q6: What hardware features can mobile applications access?</h4><ul><li>Cameras</li><li>Microphones</li><li>Location Sensors</li></ul></div>
-          <div class="enum-card searchable"><h4>Q7: What information can applications store?</h4><ul><li>User Preferences</li><li>Documents</li><li>Transaction Records</li></ul></div>
-          <div class="enum-card searchable"><h4>Q8: What are the functions of an IDE?</h4><ul><li>Writing code</li><li>Organizing code</li><li>Building code</li><li>Debugging code</li></ul></div>
-        </div>
-      </div>
-
-      <div class="sub-block">
-        <div class="section-header-flex">
-          <h3 class="section-title">3. Fill in the Blanks <span class="ar-text">(الفراغات - اضغط لإظهار الإجابة)</span></h3>
-          <button class="toggle-all-btn" onclick="toggleSectionBlanks('lec2-blanks')">REVEAL ALL</button>
-        </div>
-        <div class="blanks-list" id="lec2-blanks">
-          <div class="blank-item searchable">1. Android is a mobile operating system used by various <span class="blank-slot" data-answer="Smartphone and tablet">?[CLICK]</span> manufacturers.</div>
-          <div class="blank-item searchable">2. Android applications can be developed using <span class="blank-slot" data-answer="Kotlin">?[CLICK]</span> and <span class="blank-slot" data-answer="Java">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">3. iOS is Apple's mobile operating system designed for <span class="blank-slot" data-answer="iPhone">?[CLICK]</span> devices.</div>
-          <div class="blank-item searchable">4. Developers commonly use <span class="blank-slot" data-answer="Swift">?[CLICK]</span> to create iOS applications.</div>
-          <div class="blank-item searchable">5. Android Studio is the official <span class="blank-slot" data-answer="IDE">?[CLICK]</span> for Android development.</div>
-          <div class="blank-item searchable">6. Xcode is Apple's development environment for <span class="blank-slot" data-answer="iOS">?[CLICK]</span> applications.</div>
-          <div class="blank-item searchable">7. IDE stands for <span class="blank-slot" data-answer="Integrated Development Environment">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">8. SDK stands for <span class="blank-slot" data-answer="Software Development Kit">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">9. An SDK is a collection of software libraries, programming interfaces, and <span class="blank-slot" data-answer="Development">?[CLICK]</span> tools.</div>
-          <div class="blank-item searchable">10. Emulators and simulators run applications in <span class="blank-slot" data-answer="Virtual">?[CLICK]</span> device environments.</div>
-          <div class="blank-item searchable">11. The user interface acts as the <span class="blank-slot" data-answer="Communication">?[CLICK]</span> layer.</div>
-          <div class="blank-item searchable">12. Application logic is responsible for processing <span class="blank-slot" data-answer="User">?[CLICK]</span> input.</div>
-          <div class="blank-item searchable">13. Data storage enables applications to <span class="blank-slot" data-answer="Save">?[CLICK]</span> and <span class="blank-slot" data-answer="Retrieve">?[CLICK]</span> information.</div>
-          <div class="blank-item searchable">14. Network communication exchanges data with remote <span class="blank-slot" data-answer="Servers">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">15. Mobile applications use network protocols and <span class="blank-slot" data-answer="APIs">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">16. Cameras and microphones are examples of device <span class="blank-slot" data-answer="Hardware features">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">17. iOS applications commonly use the <span class="blank-slot" data-answer="Swift">?[CLICK]</span> programming language.</div>
-          <div class="blank-item searchable">18. Testing on real devices is important for evaluating actual device <span class="blank-slot" data-answer="Performance">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">19. Application logic manages communication with data storage and <span class="blank-slot" data-answer="Network">?[CLICK]</span> services.</div>
-          <div class="blank-item searchable">20. Device services require operating system interfaces and <span class="blank-slot" data-answer="Permissions">?[CLICK]</span>.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== LECTURE THREE ==================== -->
-    <section class="lecture-section hidden" id="lec3" data-lec="lec3">
-      <div class="lecture-banner lec3-theme">
-        <div>
-          <h2>LEVEL 03: Native Apps, PWAs & Design Challenges</h2>
-          <p class="ar-text">تعاريف + تعداد + مقارنة + فراغات</p>
-        </div>
-        <span class="badge">STAGE 3</span>
-      </div>
-
-      <div class="sub-block">
-        <h3 class="section-title">1. Definitions <span class="ar-text">(التعاريف)</span></h3>
-        <div class="cards-grid">
-          <div class="card searchable"><h4>1. Mobile Applications</h4><p>Applications that provide digital services on smartphones and tablets.</p></div>
-          <div class="card searchable"><h4>2. Native Applications</h4><p>Applications developed for specific operating systems, such as Android and iOS.</p></div>
-          <div class="card searchable"><h4>3. Progressive Web Apps (PWAs)</h4><p>Web applications that provide application-like experiences through supported web browsers.</p></div>
-          <div class="card searchable"><h4>4. Mobile Application Design</h4><p>Creating applications that operate efficiently on different mobile devices while providing reliable functionality and convenient user interaction.</p></div>
-          <div class="card searchable"><h4>5. Responsive Interfaces</h4><p>Interfaces that adapt to different display dimensions and orientations.</p></div>
-          <div class="card searchable"><h4>6. Service Workers</h4><p>Technology used to support offline functionality in Progressive Web Apps.</p></div>
-          <div class="card searchable"><h4>7. Caching</h4><p>Storing data locally to help maintain essential functions during network problems.</p></div>
-          <div class="card searchable"><h4>8. Data Privacy</h4><p>Protecting sensitive information such as personal details, passwords, and financial data.</p></div>
-        </div>
-      </div>
-
-      <div class="sub-block">
-        <h3 class="section-title">2. Enumeration <span class="ar-text">(التعدادات)</span></h3>
-        <div class="enum-grid">
-          <div class="enum-card searchable"><h4>Q1: What are the main differences between Native Mobile Applications and PWAs?</h4><ul><li>Installation and Accessibility</li><li>Development Technologies</li><li>Device Features</li><li>Offline Functionality</li><li>Updates and Maintenance</li></ul></div>
-          <div class="enum-card searchable"><h4>Q2: What are the main challenges of modern mobile application design?</h4><ul><li>Different Screen Sizes and Devices</li><li>Battery and Resource Consumption</li><li>Network Connectivity Problems</li><li>Security and Data Privacy</li><li>Accessibility and User Interaction</li></ul></div>
-          <div class="enum-card searchable"><h4>Q3: What should developers consider to protect user information?</h4><ul><li>Secure Authentication</li><li>Encrypted Communication</li><li>Appropriate Data Storage</li><li>Requesting only necessary application permissions</li></ul></div>
-          <div class="enum-card searchable"><h4>Q4: How can developers handle network connectivity problems?</h4><ul><li>Local Storage</li><li>Caching</li><li>Retry Mechanisms</li></ul></div>
-          <div class="enum-card searchable"><h4>Q5: What are the methods to improve accessibility?</h4><ul><li>Readable Text</li><li>Clear Navigation</li><li>Sufficient Color Contrast</li><li>Assistive Technologies</li></ul></div>
-          <div class="enum-card searchable"><h4>Q6: What are the resources limited in mobile devices?</h4><ul><li>Battery Capacity</li><li>Memory</li><li>Processing Resources</li></ul></div>
-          <div class="enum-card searchable"><h4>Q7: What devices do mobile applications run on?</h4><ul><li>Smartphones</li><li>Tablets</li><li>Foldable Devices</li></ul></div>
-        </div>
-      </div>
-
-      <div class="sub-block">
-        <h3 class="section-title">3. Comparisons <span class="ar-text">(المقارنة)</span></h3>
-        <div class="table-card searchable">
-          <h4>Native Mobile Applications vs. Progressive Web Apps (PWAs)</h4>
-          <table>
-            <thead><tr><th>Comparison</th><th>Native Mobile Applications</th><th>PWAs</th></tr></thead>
-            <tbody>
-              <tr><td>1. Installation</td><td>Installed through application stores.</td><td>Accessed through web browsers.</td></tr>
-              <tr><td>2. Development Technologies</td><td>Kotlin (Android), Swift (iOS).</td><td>HTML, CSS, JavaScript.</td></tr>
-              <tr><td>3. Device Features</td><td>Full access through platform APIs.</td><td>Selected features through browser APIs.</td></tr>
-              <tr><td>4. Offline Functionality</td><td>Local storage without internet.</td><td>Service workers and browser storage.</td></tr>
-              <tr><td>5. Updates</td><td>Through application stores.</td><td>Through the web.</td></tr>
-              <tr><td>6. Maintenance</td><td>Regular maintenance.</td><td>Regular maintenance.</td></tr>
-            </tbody>
-          </table>
-        </div>
-      </div>
-
-      <div class="sub-block">
-        <div class="section-header-flex">
-          <h3 class="section-title">4. Fill in the Blanks <span class="ar-text">(الفراغات - اضغط لإظهار الإجابة)</span></h3>
-          <button class="toggle-all-btn" onclick="toggleSectionBlanks('lec3-blanks')">REVEAL ALL</button>
-        </div>
-        <div class="blanks-list" id="lec3-blanks">
-          <div class="blank-item searchable">1. Native applications are developed for specific <span class="blank-slot" data-answer="operating">?[CLICK]</span> systems.</div>
-          <div class="blank-item searchable">2. PWAs use HTML, CSS, and <span class="blank-slot" data-answer="JavaScript">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">3. Kotlin is used for <span class="blank-slot" data-answer="Android">?[CLICK]</span> development.</div>
-          <div class="blank-item searchable">4. Swift is used for <span class="blank-slot" data-answer="iOS">?[CLICK]</span> development.</div>
-          <div class="blank-item searchable">5. Native applications access device features through <span class="blank-slot" data-answer="platform">?[CLICK]</span> APIs.</div>
-          <div class="blank-item searchable">6. PWAs access selected device features through <span class="blank-slot" data-answer="browser">?[CLICK]</span> APIs.</div>
-          <div class="blank-item searchable">7. PWAs support offline functionality using <span class="blank-slot" data-answer="service">?[CLICK]</span> workers.</div>
-          <div class="blank-item searchable">8. Native applications store data <span class="blank-slot" data-answer="locally">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">9. Mobile devices have limited battery capacity, memory, and <span class="blank-slot" data-answer="processing">?[CLICK]</span> resources.</div>
-          <div class="blank-item searchable">10. Developers should optimize application performance and resource usage to improve battery <span class="blank-slot" data-answer="life">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">11. Network problems include slow connections and temporary <span class="blank-slot" data-answer="interruptions">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">12. Developers can use local storage, caching, and <span class="blank-slot" data-answer="retry">?[CLICK]</span> mechanisms.</div>
-          <div class="blank-item searchable">13. Sensitive information includes personal details, passwords, and <span class="blank-slot" data-answer="financial">?[CLICK]</span> data.</div>
-          <div class="blank-item searchable">14. Secure authentication and <span class="blank-slot" data-answer="encrypted">?[CLICK]</span> communication protect information.</div>
-          <div class="blank-item searchable">15. Applications should provide readable text and clear <span class="blank-slot" data-answer="navigation">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">16. Interfaces should adapt to different display dimensions and <span class="blank-slot" data-answer="orientations">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">17. PWAs are accessed through web <span class="blank-slot" data-answer="browsers">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">18. Native applications are commonly updated through application <span class="blank-slot" data-answer="stores">?[CLICK]</span>.</div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ==================== LECTURE FOUR ==================== -->
-    <section class="lecture-section hidden" id="lec4" data-lec="lec4">
-      <div class="lecture-banner lec4-theme">
-        <div>
-          <h2>LEVEL 04: Server Communication & AI Features</h2>
-          <p class="ar-text">تعاريف + تعداد + فراغات</p>
-        </div>
-        <span class="badge">STAGE 4</span>
-      </div>
-
-      <div class="sub-block">
-        <h3 class="section-title">1. Definitions <span class="ar-text">(التعاريف)</span></h3>
-        <div class="cards-grid">
-          <div class="card searchable"><h4>1. Mobile Application Communication</h4><p>The process by which a mobile application sends requests to a server and receives responses.</p></div>
-          <div class="card searchable"><h4>2. HTTP</h4><p>A protocol used by mobile applications to communicate with servers.</p></div>
-          <div class="card searchable"><h4>3. HTTPS</h4><p>A protocol that provides encrypted communication between the application and the server.</p></div>
-          <div class="card searchable"><h4>4. API (Application Programming Interface)</h4><p>An interface used to enable communication between mobile applications and servers.</p></div>
-          <div class="card searchable"><h4>5. User Request</h4><p>An action performed by a user that requires information from a remote service.</p></div>
-          <div class="card searchable"><h4>6. Server Processing</h4><p>The process in which the server receives a request and performs the required operation.</p></div>
-          <div class="card searchable"><h4>7. Server Response</h4><p>The information sent by the server to the mobile application after processing a request.</p></div>
-          <div class="card searchable"><h4>8. Image Recognition</h4><p>The ability of mobile applications to identify and classify objects, text, and visual information in images.</p></div>
-          <div class="card searchable"><h4>9. Speech Recognition</h4><p>The ability of mobile applications to convert spoken language into written text.</p></div>
-          <div class="card searchable"><h4>10. Intelligent Chatbots</h4><p>Applications that allow users to communicate through natural language and receive answers.</p></div>
-          <div class="card searchable"><h4>11. Personalized Recommendations</h4><p>AI systems that analyze user preferences and previous interactions to suggest relevant content or services.</p></div>
-          <div class="card searchable"><h4>12. On-Device AI Processing</h4><p>Running AI models directly on mobile devices without sending every request to a remote server.</p></div>
-        </div>
-      </div>
-
-      <div class="sub-block">
-        <h3 class="section-title">2. Enumeration <span class="ar-text">(التعدادات)</span></h3>
-        <div class="enum-grid">
-          <div class="enum-card searchable"><h4>Q1: What are the main stages of communication between a mobile application and a server?</h4><ol><li>User Request</li><li>Sending the HTTP Request</li><li>Server Processing</li><li>Server Response</li><li>Displaying the Result</li></ol></div>
-          <div class="enum-card searchable"><h4>Q2: What information may an HTTP request include?</h4><ul><li>API Endpoint</li><li>HTTP Method</li><li>Authentication Information</li><li>Other Required Parameters</li></ul></div>
-          <div class="enum-card searchable"><h4>Q3: What are the main features of AI-powered mobile applications?</h4><ul><li>Image Recognition</li><li>Speech Recognition</li><li>Intelligent Chatbots</li><li>Personalized Recommendations</li><li>On-Device AI Processing</li></ul></div>
-          <div class="enum-card searchable"><h4>Q4: What can Image Recognition do?</h4><ul><li>Recognize products</li><li>Scan documents</li><li>Identify plants</li><li>Extract information from photographs</li></ul></div>
-          <div class="enum-card searchable"><h4>Q5: What can Speech Recognition do?</h4><ul><li>Convert spoken language into written text</li><li>Interact through voice commands</li><li>Dictate messages</li><li>Create text from audio recordings</li></ul></div>
-          <div class="enum-card searchable"><h4>Q6: What can Intelligent Chatbots do?</h4><ul><li>Answer questions</li><li>Explain information</li><li>Assist with common tasks</li></ul></div>
-          <div class="enum-card searchable"><h4>Q7: What are the benefits of On-Device AI Processing?</h4><ul><li>Reduce network dependency</li><li>Enable selected AI features to operate offline</li></ul></div>
-          <div class="enum-card searchable"><h4>Q8: What does On-Device AI performance depend on?</h4><ul><li>Device Hardware</li><li>Available Memory</li><li>AI Model Size</li></ul></div>
-        </div>
-      </div>
-
-      <div class="sub-block">
-        <div class="section-header-flex">
-          <h3 class="section-title">3. Fill in the Blanks <span class="ar-text">(الفراغات - اضغط لإظهار الإجابة)</span></h3>
-          <button class="toggle-all-btn" onclick="toggleSectionBlanks('lec4-blanks')">REVEAL ALL</button>
-        </div>
-        <div class="blanks-list" id="lec4-blanks">
-          <div class="blank-item searchable">1. Mobile applications communicate with remote servers using <span class="blank-slot" data-answer="HTTP or HTTPS">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">2. The mobile application acts as a <span class="blank-slot" data-answer="Client">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">3. The server processes requests and returns a <span class="blank-slot" data-answer="Response">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">4. HTTPS provides <span class="blank-slot" data-answer="Encrypted Communication">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">5. Communication begins with a <span class="blank-slot" data-answer="User Request">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">6. The server may communicate with a <span class="blank-slot" data-answer="Database">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">7. The server response includes a <span class="blank-slot" data-answer="Status Code">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">8. Image Recognition identifies and classifies <span class="blank-slot" data-answer="Objects and Text">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">9. Speech Recognition converts spoken language into <span class="blank-slot" data-answer="Written Text">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">10. Intelligent Chatbots communicate through <span class="blank-slot" data-answer="Natural Language">`?[CLICK]`</span>.</div>
-          <div class="blank-item searchable">11. Personalized Recommendations analyze user <span class="blank-slot" data-answer="Preferences">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">12. On-Device AI runs models directly on <span class="blank-slot" data-answer="Mobile Devices">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">13. On-Device AI can reduce <span class="blank-slot" data-answer="Network Dependency">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">14. AI applications can process information directly on the device or use <span class="blank-slot" data-answer="Remote AI Services">?[CLICK]</span>.</div>
-          <div class="blank-item searchable">15. Performance depends on device hardware, available memory, and <span class="blank-slot" data-answer="AI Model Size">?[CLICK]</span>.</div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="site-footer">
-    <div class="container">
-      <p>جميع الحقوق محفوظة لمبرمج <a href="https://t.me/pbakr" target="_blank" style="color: var(--neon-blue); text-decoration: none; font-weight: 700;">بكرجاسم حسن</a></p>
-    </div>
-  </footer>
-
-  <script>
-    document.addEventListener('DOMContentLoaded', () => {
-      const navBtn = document.querySelector('.nav-btn');
-      const lectureSections = document.querySelectorAll('.lecture-section');
-      const dashboardView = document.getElementById('dashboardView');
-      const dashCards = document.querySelectorAll('.dash-card');
-      const homeBrandBtn = document.getElementById('homeBrandBtn');
-
-      function showView(target) {
-        if (target === 'dashboard') {
-          dashboardView.classList.remove('hidden');
-          lectureSections.forEach(sec => sec.classList.add('hidden'));
-          navBtn.classList.add('active');
-          navBtn.textContent = '// لوحة التحكم';
-        } else {
-          dashboardView.classList.add('hidden');
-          lectureSections.forEach(sec => {
-            if (sec.getAttribute('data-lec') === target) {
-              sec.classList.remove('hidden');
-            } else {
-              sec.classList.add('hidden');
-            }
-          });
-          navBtn.classList.add('active');
-          navBtn.textContent = '← العودة إلى لوحة التحكم';
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' });
-      }
-
-      navBtn.addEventListener('click', () => {
-        showView('dashboard');
-      });
-
-      dashCards.forEach(card => {
-        card.addEventListener('click', () => {
-          const target = card.getAttribute('data-target');
-          showView(target);
-        });
-      });
-
-      if (homeBrandBtn) {
-        homeBrandBtn.addEventListener('click', () => {
-          showView('dashboard');
-        });
-      }
-
-      const blankSlots = document.querySelectorAll('.blank-slot');
-      blankSlots.forEach(slot => {
-        slot.addEventListener('click', () => {
-          if (slot.classList.contains('revealed')) {
-            slot.classList.remove('revealed');
-            slot.textContent = '?[CLICK]';
-          } else {
-            slot.classList.add('revealed');
-            slot.textContent = slot.getAttribute('data-answer');
-          }
-        });
-      });
-
-      const searchInput = document.getElementById('searchInput');
-      const searchableItems = document.querySelectorAll('.searchable');
-      searchInput.addEventListener('input', (e) => {
-        const query = e.target.value.toLowerCase().trim();
-        if (query.length > 0) {
-          dashboardView.classList.add('hidden');
-          lectureSections.forEach(sec => sec.classList.remove('hidden'));
-        }
-        searchableItems.forEach(item => {
-          const text = item.textContent.toLowerCase();
-          item.style.display = text.includes(query) ? '' : 'none';
-        });
-      });
-    });
-
-    function toggleSectionBlanks(containerId) {
-      const container = document.getElementById(containerId);
-      const slots = container.querySelectorAll('.blank-slot');
-      const anyHidden = Array.from(slots).some(s => !s.classList.contains('revealed'));
-      slots.forEach(slot => {
-        if (anyHidden) {
-          slot.classList.add('revealed');
-          slot.textContent = slot.getAttribute('data-answer');
-        } else {
-          slot.classList.remove('revealed');
-          slot.textContent = '?[CLICK]';
-        }
-      });
-    }
-  </script>
+ <div class="content">
+  <h3 class="stitle">Exam 2023 <span>امتحان 2023</span></h3>
+  <div class="cards">
+   <div class="card searchable"><h4>Q1. Define the following terms</h4><details><summary>Show Answers</summary><ol>
+    <li><b>Enhanced User Experience:</b> Improving the way users interact with an application through a convenient, responsive, and user-friendly interface.</li>
+    <li><b>Near Field Communication (NFC):</b> A short-range wireless communication technology that allows devices to exchange data when they are close to each other.</li>
+    <li><b>Access to Platforms:</b> The ability to make applications available on mobile platforms such as Android and iOS.</li>
+    <li><b>Revenue Generation:</b> Earning income through an application using methods such as purchases, subscriptions, or advertisements.</li>
+    <li><b>Mobile Phone Flexibility:</b> The ability of mobile phones and applications to support different tasks, services, and usage situations.</li>
+   </ol></details></div>
+   <div class="card searchable"><h4>Q2. What are the benefits of Cellular Communication Systems?</h4><details><summary>Show Model Answer</summary><ol><li>Wide coverage area.</li><li>Mobility: users can communicate while moving.</li><li>Wireless communication without physical cables.</li><li>Reuse of frequencies through cellular architecture.</li><li>Support for many users and communication services.</li></ol></details></div>
+  </div>
+  <h3 class="stitle" style="margin-top:25px">Q3. Fill in the Blanks</h3>
+  <button class="action" onclick="toggleAll('p23')">REVEAL / HIDE ALL</button>
+  <div class="blanks" id="p23">
+   <div class="blank searchable">1. Short-range communication systems find applications in various domains, including consumer electronics, <span class="answer" data-a="healthcare">?[CLICK]</span>, automotive, and industrial settings.</div>
+   <div class="blank searchable">2. Mobile devices are categorized into three classes: user interfaces, communication interfaces, and <span class="answer" data-a="built-in resources">?[CLICK]</span>.</div>
+   <div class="blank searchable">3. As mobile apps handle sensitive user data, security will remain a top <span class="answer" data-a="priority">?[CLICK]</span>.</div>
+   <div class="blank searchable">4. Mobile services can be categorized into personal and <span class="answer" data-a="community services">?[CLICK]</span>.</div>
+   <div class="blank searchable">5. While the hardware platform of a mobile phone remains static, software components are <span class="answer" data-a="highly adaptable">?[CLICK]</span>.</div>
+  </div>
+ </div>
+</section>
+</main>
+<footer><div class="container ar">جميع الحقوق محفوظة لمبرمج <a href="https://t.me/pbakr" target="_blank">بكر جاسم حسن</a></div></footer>
+<script>
+const ids=['lec1','lec2','lec3','lec4','past'];
+function show(id){
+ document.getElementById('dashboard').classList.add('hidden');
+ ids.forEach(x=>document.getElementById(x).classList.toggle('hidden',x!==id));
+ document.getElementById('back').textContent='← العودة إلى لوحة التحكم';
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+function home(){
+ document.getElementById('dashboard').classList.remove('hidden');
+ ids.forEach(x=>document.getElementById(x).classList.add('hidden'));
+ document.getElementById('back').textContent='// لوحة التحكم';
+ document.getElementById('search').value='';
+ document.querySelectorAll('.searchable').forEach(x=>x.style.display='');
+ window.scrollTo({top:0,behavior:'smooth'});
+}
+document.addEventListener('click',e=>{
+ const a=e.target.closest('.answer');
+ if(!a)return;
+ if(a.classList.toggle('revealed'))a.textContent=a.dataset.a;
+ else a.textContent='?[CLICK]';
+});
+function toggleAll(id){
+ const slots=document.querySelectorAll('#'+id+' .answer');
+ const reveal=[...slots].some(x=>!x.classList.contains('revealed'));
+ slots.forEach(x=>{x.classList.toggle('revealed',reveal);x.textContent=reveal?x.dataset.a:'?[CLICK]';});
+}
+function searchContent(){
+ const q=document.getElementById('search').value.toLowerCase().trim();
+ if(!q){home();return;}
+ document.getElementById('dashboard').classList.add('hidden');
+ ids.forEach(id=>document.getElementById(id).classList.remove('hidden'));
+ document.querySelectorAll('.searchable').forEach(el=>{
+  el.style.display=el.textContent.toLowerCase().includes(q)?'':'none';
+ });
+}
+</script>
 </body>
 </html>
